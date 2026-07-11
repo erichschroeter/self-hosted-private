@@ -1,0 +1,53 @@
+---
+version: "2"
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:10.10.3
+    container_name: jellyfin
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      # - JELLYFIN_PublishedServerUrl=http://10.4.0.11:8096 # (optional) Set the autodiscovery response domain or IP address, include http(s)://.
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.prplalpca.com
+    volumes:
+      - /opt/jellyfin/config:/config
+      # - /path/to/tvseries:/data/tvshows
+      # - /path/to/movies:/data/movies
+      # - /home/erich/src/plex/database:/config
+      # - /home/erich/src/plex/transcode/temp:/transcode
+      - /media/drobo/Videos/movies:/movies
+      - /media/drobo/Videos/tv:/tv
+      - /media/drobo/Videos/misc:/other/misc
+      - /media/drobo/Downloads:/downloads
+    # networks:
+    #   - traefik_proxy
+    # ports:
+    #   # - 8096:8096
+    #   - 8920:8920 # (optional) Https webUI (you need to set up your own certificate).
+    #   - 7359:7359/udp # (optional) Allows clients to discover Jellyfin on the local network.
+    #   - 1900:1900/udp # (optional) Service discovery used by DNLA and clients.
+      
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.prplalpca.com`)"
+      - "traefik.http.routers.jellyfin.entrypoints=websecure"
+      # - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      # - "traefik.docker.network=traefik_proxy"
+      - "traefik.http.services.jellyfin.loadbalancer.server.url=http://10.4.0.11:8096"
+
+      - "traefik.http.middlewares.jellyfin-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.jellyfin-headers.headers.customrequestheaders.X-Forwarded-Port=443"
+    
+      # Middleware: disable buffering (important for streaming)
+      - "traefik.http.middlewares.jellyfin-buffer.buffering.maxRequestBodyBytes=0"
+      - "traefik.http.middlewares.jellyfin-buffer.buffering.memRequestBodyBytes=0"
+    
+      - "traefik.http.routers.jellyfin.middlewares=jellyfin-headers,jellyfin-buffer"
+    restart: unless-stopped
+
+networks:
+  traefik_proxy:
+    external: true
+

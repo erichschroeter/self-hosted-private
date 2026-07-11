@@ -1,0 +1,236 @@
+
+version: "3.9"
+
+services:
+
+  #########################################################
+  # VPN (TorGuard via Gluetun)
+  #########################################################
+
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+
+    networks:
+      - vpn
+      - traefik_proxy
+
+    volumes:
+      - /docker/gluetun:/gluetun
+
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+
+      - WIREGUARD_PRIVATE_KEY=GFKAWYIq1VfOg5hEf7xOnxnVmpIZq8IncppQvF7Jtno=
+      - WIREGUARD_PUBLIC_KEY=IR/YxpLToB2rDEPhnjTcSnWHri5eb7a4VHSlXqvDQmw=
+      - WIREGUARD_ADDRESSES=10.13.108.93/24
+      - WIREGUARD_ENDPOINT_IP=45.133.180.2
+      - WIREGUARD_ENDPOINT_PORT=1443
+      - WIREGUARD_ALLOWED_IPS=0.0.0.0/0
+      
+      - DNS_ADDRESS=1.1.1.1
+
+      # Kill switch
+      - FIREWALL=on
+
+      # Allow LAN access
+      - FIREWALL_OUTBOUND_SUBNETS=10.4.0.0/24
+
+      # allow WebUI access
+      - FIREWALL_INPUT_PORTS=8080
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.docker.network=traefik_proxy"
+
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.prplalpca.com`)"
+      - "traefik.http.routers.qbittorrent.entrypoints=websecure"
+      - "traefik.http.routers.qbittorrent.tls=true"
+
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+    restart: unless-stopped
+
+
+  #########################################################
+  # qBittorrent (VPN only)
+  #########################################################
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+
+    network_mode: "service:gluetun"
+
+    depends_on:
+      - gluetun
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+
+      - WEBUI_PORT=8080
+      - QBT_WEBUI_BIND_ADDRESS=0.0.0.0
+
+    volumes:
+      - /docker/qbittorrent:/config
+      - /media/drobo/Downloads:/downloads
+
+    restart: unless-stopped
+
+  #########################################################
+  # Bazarr
+  #########################################################
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+  
+    networks:
+      - traefik_proxy
+  
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+  
+    volumes:
+      - /docker/bazarr:/config
+      - /media/drobo/Downloads:/media
+  
+    restart: unless-stopped
+  
+    labels:
+      - "traefik.enable=true"
+  
+      - "traefik.http.routers.bazarr.rule=Host(`bazarr.prplalpca.com`)"
+      - "traefik.http.routers.bazarr.entrypoints=websecure"
+      - "traefik.http.routers.bazarr.tls=true"
+  
+      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+
+  #########################################################
+  # Flaresolverr
+  #########################################################
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+  
+    networks:
+      - traefik_proxy
+  
+    environment:
+      - LOG_LEVEL=info
+  
+    restart: unless-stopped
+
+  #########################################################
+  # Prowlarr
+  #########################################################
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+
+    networks:
+      - traefik_proxy
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+
+    volumes:
+      - /docker/prowlarr:/config
+
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.prplalpca.com`)"
+      - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.routers.prowlarr.tls=true"
+
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+
+  #########################################################
+  # Radarr
+  #########################################################
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+
+    networks:
+      - traefik_proxy
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+
+    volumes:
+      - /docker/radarr:/config
+      - /media/drobo/Downloads:/media
+      - /media/drobo/Downloads:/downloads
+
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.radarr.rule=Host(`radarr.prplalpca.com`)"
+      - "traefik.http.routers.radarr.entrypoints=websecure"
+      - "traefik.http.routers.radarr.tls=true"
+
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+
+  #########################################################
+  # Sonarr
+  #########################################################
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+
+    networks:
+      - traefik_proxy
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+
+    volumes:
+      - /docker/sonarr:/config
+      - /media/drobo/Downloads:/media
+
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.prplalpca.com`)"
+      - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.routers.sonarr.tls=true"
+
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+
+
+#########################################################
+# Networks
+#########################################################
+
+networks:
+
+  vpn:
+    driver: bridge
+
+  traefik_proxy:
+    external: true
+
