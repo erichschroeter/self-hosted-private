@@ -16,15 +16,15 @@ services:
     environment:
       POSTGRES_DB: paperless
       POSTGRES_USER: paperless
-      POSTGRES_PASSWORD: nre3zL2i4qTdof^icrmKvSB*Kmh!5h
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
     depends_on:
       - db
       - broker
-    # ports:
-    #   - "8010:8000"
+    ports:
+      - "${BIND_IP:-127.0.0.1}:8010:8000"
     volumes:
       - data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
@@ -32,14 +32,14 @@ services:
       - ./consume:/usr/src/paperless/consume
     networks:
       - paperless_internal
-      - traefik_proxy
+      - traefik-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.paperless.rule=Host(`paperless.prplalpca.com`)"
-      - "traefik.http.routers.paperless.entrypoints=websecure"
+      - "traefik.http.routers.paperless.rule=${TRAEFIK_RULE:-Host(`paperless.localhost`)}"
+      - "traefik.http.routers.paperless.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
       - "traefik.http.services.paperless.loadbalancer.server.port=8000"
       - "traefik.http.middlewares.paperless-headers.headers.sslProxyHeaders.X-Forwarded-Proto=https"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik-net"
 
       - "traefik.http.middlewares.paperless-sec.headers.stsSeconds=31536000"
       - "traefik.http.middlewares.paperless-sec.headers.stsIncludeSubdomains=true"
@@ -51,22 +51,21 @@ services:
       PAPERLESS_DBHOST: db
       PAPERLESS_DBNAME: paperless
       PAPERLESS_DBUSER: paperless
-      PAPERLESS_DBPASS: nre3zL2i4qTdof^icrmKvSB*Kmh!5h
+      PAPERLESS_DBPASS: ${DB_PASSWORD}
 
-      PAPERLESS_URL: https://paperless.prplalpca.com
-      PAPERLESS_ALLOWED_HOSTS: paperless.prplalpca.com
+      PAPERLESS_URL: ${PAPERLESS_URL:-https://paperless.localhost}
+      PAPERLESS_ALLOWED_HOSTS: ${PAPERLESS_ALLOWED_HOSTS:-paperless.localhost}
       PAPERLESS_USE_X_FORWARD_HOST: true
       PAPERLESS_USE_X_FORWARD_PORT: true
       PAPERLESS_PROXY_SSL_HEADER: '["HTTP_X_FORWARDED_PROTO", "https"]'
-    env_file:
-      - stack.env
+
 volumes:
   data:
   media:
   pgdata:
   redisdata:
+
 networks:
-  traefik_proxy:
+  traefik-net:
     external: true
   paperless_internal:
-

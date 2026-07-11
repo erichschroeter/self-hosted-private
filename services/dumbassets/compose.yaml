@@ -4,9 +4,16 @@ services:
     image: dumbwareio/dumbassets:latest
     restart: unless-stopped
     ports: 
-      - ${DUMBASSETS_PORT:-3030}:3000
+      - "${BIND_IP:-127.0.0.1}:${DUMBASSETS_PORT:-3030}:3000"
     volumes:
       - ${DUMBASSETS_DATA_PATH:-./data}:/app/data
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dumbassets.rule=${TRAEFIK_RULE:-Host(`dumbassets.localhost`)}"
+      - "traefik.http.routers.dumbassets.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.services.dumbassets.loadbalancer.server.port=3000"
     environment:
       NODE_ENV: ${DUMBASSETS_NODE_ENV:-production}
       DEBUG: ${DUMBASSETS_DEBUG:-true}
@@ -17,5 +24,7 @@ services:
       APPRISE_URL: ${DUMBASSETS_APPRISE_URL:-}
       CURRENCY_CODE: ${DUMBASSETS_CURRENCY_CODE:-USD}
       CURRENCY_LOCALE: ${DUMBASSETS_CURRENCY_LOCALE:-en-US}
-      # ...other env vars
 
+networks:
+  traefik-net:
+    external: true

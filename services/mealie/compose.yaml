@@ -3,46 +3,28 @@ services:
     container_name: mealie
     image: ghcr.io/mealie-recipes/mealie:latest
     restart: unless-stopped
+    ports:
+      - "${BIND_IP:-127.0.0.1}:9091:9000"
     volumes:
       - mealie-data:/app/data/
     networks:
-      - traefik_proxy
-    # ports:
-    #   - 9091:9000
+      - traefik-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mealie.rule=Host(`mealie.prplalpca.com`)"
-      - "traefik.http.routers.mealie.entrypoints=websecure"
-      - "traefik.http.routers.mealie.tls.certresolver=cloudflare"
+      - "traefik.http.routers.mealie.rule=${TRAEFIK_RULE:-Host(`mealie.localhost`)}"
+      - "traefik.http.routers.mealie.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.routers.mealie.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-cloudflare}"
       - "traefik.http.services.mealie.loadbalancer.server.port=9000"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik-net"
     environment:
-      ALLOW_SIGNUP: "false"
-      LOG_LEVEL: "DEBUG"
-
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-DEBUG}
       DB_ENGINE: sqlite # Optional: 'sqlite', 'postgres'
-      # =====================================
-      # Postgres Config
-      #POSTGRES_USER: mealie
-      #POSTGRES_PASSWORD: mealie
-      #POSTGRES_SERVER: postgres
-      #POSTGRES_PORT: 5432
-      #POSTGRES_DB: mealie
-      # =====================================
-      # Email Configuration
-      # SMTP_HOST=
-      # SMTP_PORT=587
-      # SMTP_FROM_NAME=Mealie
-      # SMTP_AUTH_STRATEGY=TLS # Options: 'TLS', 'SSL', 'NONE'
-      # SMTP_FROM_EMAIL=
-      # SMTP_USER=
-      # SMTP_PASSWORD=
 
 volumes:
   mealie-data:
     driver: local
 
 networks:
-  traefik_proxy:
+  traefik-net:
     external: true
-

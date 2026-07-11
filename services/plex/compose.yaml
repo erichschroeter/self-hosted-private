@@ -1,41 +1,29 @@
-version: '2'
-
-#networks:
-#  tunnel:
-#    external: true
-
 services:
   plex:
     container_name: plex
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
-      # TCP: 32400 (access to the Plex Media Server) [required]
-      - 32400:32400/tcp
-      # UDP: 5353 (older Bonjour/Avahi network discovery)
-      # TCP: 8324 (controlling Plex for Roku via Plex Companion)
-      #- 8324:8324/tcp
-      # TCP: 32469 (access to the Plex DLNA Server)
-      #- 32469:32469/tcp
-      # UDP: 1900 (access to the Plex DLNA Server)
-      #- 1900:1900/udp
-      # UDP: 32410, 32412, 32413, 32414 (current GDM network discovery)
-      #- 32410:32410/udp
-      #- 32412:32412/udp
-      #- 32413:32413/udp
-      #- 32414:32414/udp
+      - "${BIND_IP:-127.0.0.1}:32400:32400/tcp"
     environment:
       - HOSTNAME=PlexServer
-      - TZ=America/Chicago
-      # - PLEX_CLAIM=claim-FdfUTdLni2j_ndAZRmQB
-      - PLEX_CLAIM=claim-1G8Yhan3xhuPyWfBMm-t
-      - ADVERTISE_IP=http://10.4.0.11:32400/
+      - TZ=${TZ:-America/Chicago}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - ADVERTISE_IP=${ADVERTISE_IP:-http://localhost:32400/}
     hostname: PlexServer
     volumes:
       - /home/erich/src/plex/database:/config
       - /home/erich/src/plex/transcode/temp:/transcode
       - /media/drobo:/media/drobo
       - /home/erich/Downloads/Youtube:/media/metube
-    #networks:
-    #  - tunnel
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.rule=${TRAEFIK_RULE:-Host(`plex.localhost`)}"
+      - "traefik.http.routers.plex.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
 
+networks:
+  traefik-net:
+    external: true

@@ -1,11 +1,6 @@
 services:
   grimmory:
     image: grimmory/grimmory:latest
-    # Convenience tag:
-    # image: grimmory/grimmory:<release-version>
-    # Alternative: ghcr.io/grimmory-tools/grimmory:<release-version>
-    # To build from source instead: comment out 'image' and uncomment below
-    # build: .
     container_name: grimmory
     environment:
       - USER_ID=${APP_USER_ID}
@@ -18,20 +13,19 @@ services:
       - DISK_TYPE=${DISK_TYPE}
     networks:
       - default
-      - traefik_proxy
-    
+      - traefik-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grimmory.rule=Host(`grimmory.prplalpca.com`)"
-      - "traefik.http.routers.grimmory.entrypoints=websecure"
-      - "traefik.http.routers.grimmory.tls.certresolver=cloudflare"
+      - "traefik.http.routers.grimmory.rule=${TRAEFIK_RULE:-Host(`grimmory.localhost`)}"
+      - "traefik.http.routers.grimmory.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.routers.grimmory.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-cloudflare}"
       - "traefik.http.services.grimmory.loadbalancer.server.port=6060"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik-net"
     depends_on:
       mariadb:
         condition: service_healthy
     ports:
-      - "6060:6060"
+      - "${BIND_IP:-127.0.0.1}:6060:6060"
     volumes:
       - ./data:/app/data
       - ./books:/books
@@ -66,6 +60,5 @@ services:
       retries: 10
 
 networks:
-  traefik_proxy:
+  traefik-net:
     external: true
-

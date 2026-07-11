@@ -13,31 +13,23 @@ services:
       - "8080:80/tcp"
       # Default HTTPs Port. FTL will generate a self-signed certificate
       - "8443:443/tcp"
-      # Uncomment the line below if you are using Pi-hole as your DHCP server
-      #- "67:67/udp"
-      # Uncomment the line below if you are using Pi-hole as your NTP server
-      #- "123:123/udp"
     environment:
-      # Set the appropriate timezone for your location (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g:
-      TZ: 'America/Chicago'
-      # Set a password to access the web interface. Not setting one will result in a random password being assigned
-      FTLCONF_webserver_api_password: 'arrest-iodine7-bargraph-aptitude'
+      TZ: ${TZ:-America/Chicago}
+      FTLCONF_webserver_api_password: ${FTLCONF_WEBSERVER_API_PASSWORD}
       FTLCONF_webserver_port: '8080o,[::]:8080o,8443os,[::]:8443os'
-      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'ALL'
       FTLCONF_dns_listeningMode: 'ALL'
-
-    # Volumes store your data between container upgrades
     volumes:
-      # For persisting Pi-hole's databases and common configuration file
       - './etc-pihole:/etc/pihole'
-      # Uncomment the below if you have custom dnsmasq config files that you want to persist. Not needed for most starting fresh with Pi-hole v6. If you're upgrading from v5 you and have used this directory before, you should keep it enabled for the first v6 container start to allow for a complete migration. It can be removed afterwards. Needs environment variable FTLCONF_misc_etc_dnsmasq_d: 'true'
-      #- './etc-dnsmasq.d:/etc/dnsmasq.d'
     cap_add:
-      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-      # Required if you are using Pi-hole as your DHCP server, else not needed
       - NET_ADMIN
-      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
       - SYS_TIME
-      # Optional, if Pi-hole should get some more processing time
       - SYS_NICE
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.rule=${TRAEFIK_RULE:-Host(`pihole.localhost`)}"
+      - "traefik.http.routers.pihole.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.services.pihole.loadbalancer.server.url=http://${LOCAL_IP:-127.0.0.1}:8080"
 
+networks:
+  traefik-net:
+    external: true
