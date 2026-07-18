@@ -15,7 +15,7 @@ This repository contains private local service stacks managed via Docker Compose
 | **Jellyfin** | `https://jellyfin.prplalpca.com` or `.localhost` | [http://localhost:8096](http://localhost:8096) | [Read Docs](docs/jellyfin.md) |
 | **Mealie Recipes** | `http://mealie.prplalpca.com` or `.localhost` | [http://localhost:9091](http://localhost:9091) | [Read Docs](docs/mealie.md) |
 | **Paperless Documents** | `http://paperless.prplalpca.com` or `.localhost` | [http://localhost:8010](http://localhost:8010) | [Read Docs](docs/paperless.md) |
-| **Pi-hole Admin** | `http://pihole.prplalpca.com` or `.localhost` | [http://localhost:8080](http://localhost:8080) | [Read Docs](docs/pihole.md) |
+| **Pi-hole Admin** | `http://pihole.prplalpca.com` or `.localhost` | [http://localhost:8087](http://localhost:8087) | [Read Docs](docs/pihole.md) |
 | **Plex Media Server** | `http://plex.prplalpca.com` or `.localhost` | [http://localhost:32400](http://localhost:32400) | [Read Docs](docs/plex.md) |
 | **TorGuard VPN Stack** | Multiple domains (see docs) | Multiple ports (see docs) | [Read Docs](docs/torguard-vpn.md) |
 | **Wake-on-LAN (UpSnap)** | `http://wol.prplalpca.com` or `.localhost` | [http://localhost:8090](http://localhost:8090) | [Read Docs](docs/wol.md) |

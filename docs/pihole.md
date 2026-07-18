@@ -14,10 +14,15 @@ Pi-hole is a self-hosted DNS sinkhole that blocks advertisements and tracking do
 Pi-hole is configured in `services/pihole/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `8080` (Runs in host networking mode, exposing native HTTP port `8080` and DNS port `53` directly)
+* **Host Port**: `8087` (Exposing native HTTP port `8087` and DNS port `53` directly)
 
 ##### Traefik Labels
 Exposes the Pi-hole Admin Web Interface on standard port 80 at `http://pihole.localhost` (or `http://pihole.prplalpca.com`) on the external `traefik-net` network using a custom loadbalancer destination.
+
+##### Declarative Wildcard DNS (Zero Maintenance)
+Pi-hole v6 in this homelab features fully automated, declarative wildcard DNS resolution. It leverages the native FTL configuration line variable `FTLCONF_misc_dnsmasq_lines` inside `compose.yaml` to automatically interpolate your active environment IP (`LOCAL_IP`):
+* **At Home** (`LOCAL_IP=10.4.0.11`): Pi-hole automatically resolves `*.prplalpca.com` to your home server LAN IP, letting you access any new service instantly by simply adding Traefik labels in `compose.yaml` (no manual DNS setting required).
+* **At Work** (`LOCAL_IP=127.0.0.1`): Pi-hole automatically routes `*.prplalpca.com` to your local loopback, enabling standalone domain testing.
 
 ##### Secrets Management (`secrets.env`)
 To protect your Pi-hole web admin dashboard, you can create a `secrets.env` file (which is git-ignored) in the `services/pihole/` directory containing:
