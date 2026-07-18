@@ -1,0 +1,3 @@
+etc/pihole/
+etc/dnsmasq.d/99-wildcard-dns.conf
+

@@ -24,7 +24,8 @@ services:
       FTLCONF_webserver_port: '${PIHOLE_WEB_PORT:-8087}o,[::]:${PIHOLE_WEB_PORT:-8087}o,8443os,[::]:8443os'
       FTLCONF_dns_listeningMode: 'ALL'
     volumes:
-      - './etc-pihole:/etc/pihole'
+      - './etc/pihole:/etc/pihole'
+      - './etc/dnsmasq.d/99-wildcard-dns.conf:/etc/dnsmasq.d/99-wildcard-dns.conf:ro'
     cap_add:
       - NET_ADMIN
       - SYS_TIME
