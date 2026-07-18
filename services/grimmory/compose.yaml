@@ -2,6 +2,11 @@ services:
   grimmory:
     image: grimmory/grimmory:latest
     container_name: grimmory
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     environment:
       - USER_ID=${APP_USER_ID}
       - GROUP_ID=${APP_GROUP_ID}
@@ -40,6 +45,11 @@ services:
 
   mariadb:
     image: lscr.io/linuxserver/mariadb:11.4.5
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     environment:
       - PUID=${DB_USER_ID}
       - PGID=${DB_GROUP_ID}

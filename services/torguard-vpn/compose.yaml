@@ -16,6 +16,11 @@ services:
       - traefik-net
     volumes:
       - /docker/gluetun:/gluetun
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     environment:
       - VPN_SERVICE_PROVIDER=custom
       - VPN_TYPE=wireguard

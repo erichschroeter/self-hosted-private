@@ -5,6 +5,11 @@ services:
     image: pihole/pihole:latest
     network_mode: host
     restart: unless-stopped
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     ports:
       # DNS Ports
       - "53:53/tcp"

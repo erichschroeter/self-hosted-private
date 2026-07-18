@@ -13,6 +13,11 @@ services:
       - pgdata:/var/lib/postgresql
     networks:
       - paperless_internal
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     environment:
       POSTGRES_DB: paperless
       POSTGRES_USER: paperless
@@ -30,6 +35,11 @@ services:
       - media:/usr/src/paperless/media
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
+    env_file:
+      - path: .env
+        required: true
+      - path: secrets.env
+        required: false
     networks:
       - paperless_internal
       - traefik-net
