@@ -1,3 +1,3 @@
-etc/pihole/
-etc/dnsmasq.d/99-wildcard-dns.conf
-
+# Ignore local runtime data and active environment links
+etc-pihole/
+.env
