@@ -19,6 +19,17 @@ Grimmory is configured in `services/grimmory/compose.yaml`.
 ##### Traefik Labels
 Exposes the application on standard port 80 at `http://grimmory.localhost` (or `http://grimmory.prplalpca.com`) on the external `traefik-net` network.
 
+##### Secrets Management (`secrets.env`)
+To protect your book collection database, you can create a `secrets.env` file (which is git-ignored) in the `services/grimmory/` directory containing:
+
+* **`DB_PASSWORD`**: Strong custom MariaDB user password for Grimmory's active session connections.
+* **`MYSQL_ROOT_PASSWORD`**: High-entropy root administrative password for the MariaDB host database container.
+
+To securely generate strong, high-entropy passwords, use this command:
+```bash
+openssl rand -base64 18
+```
+
 [top](#top)
 
 #### How to Run <a name="how-to-run"></a>

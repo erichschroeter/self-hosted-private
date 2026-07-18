@@ -34,6 +34,22 @@ Each service is dynamically reverse-proxied over `traefik-net` on standard port 
 * `http://radarr.localhost` (or `.prplalpca.com`)
 * `http://sonarr.localhost` (or `.prplalpca.com`)
 
+##### Secrets Management (`secrets.env`)
+To protect your VPN credentials and connection secrets, you can create a `secrets.env` file (which is git-ignored) in the `services/torguard-vpn/` directory containing your WireGuard key pair:
+
+* **`WIREGUARD_PRIVATE_KEY`**: Your WireGuard interface private key.
+* **`WIREGUARD_PUBLIC_KEY`**: Your WireGuard interface public key.
+
+If you need to generate a fresh, secure WireGuard key pair on your machine, use either option:
+* **Using WireGuard CLI (if installed locally)**:
+  ```bash
+  wg genkey | tee privatekey | wg pubkey > publickey
+  ```
+* **Using Docker (fully portable, zero dependencies)**:
+  ```bash
+  docker run --rm -it alpine sh -c "apk add --no-cache wireguard-tools && wg genkey | tee privatekey | wg pubkey > publickey && echo 'Private Key:' && cat privatekey && echo '---' && echo 'Public Key:' && cat publickey"
+  ```
+
 [top](#top)
 
 #### How to Run <a name="how-to-run"></a>

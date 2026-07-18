@@ -19,6 +19,16 @@ Paperless is configured in `services/paperless/compose.yaml`.
 ##### Traefik Labels
 Exposes Paperless on standard port 80 at `http://paperless.localhost` (or `http://paperless.prplalpca.com`) on the external `traefik-net` network.
 
+##### Secrets Management (`secrets.env`)
+To protect your document archive and Postgres database, you can create a `secrets.env` file (which is git-ignored) in the `services/paperless/` directory containing:
+
+* **`DB_PASSWORD`**: A strong, unique password for Paperless's PostgreSQL database and admin access.
+
+To securely generate a strong, high-entropy database password, use this command:
+```bash
+openssl rand -base64 24
+```
+
 [top](#top)
 
 #### How to Run <a name="how-to-run"></a>
