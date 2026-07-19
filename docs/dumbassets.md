@@ -19,6 +19,13 @@ Dumbassets is configured in `services/dumbassets/compose.yaml`.
 ##### Traefik Labels
 Exposes the dashboard on standard port 80 at `http://dumbassets.localhost` (or `http://dumbassets.prplalpca.com`) on the external `traefik-net` network.
 
+##### Secrets Management (`secrets.env`)
+To protect your assets dashboard from unauthorized access, you can create a `secrets.env` file (which is git-ignored) in the `services/dumbassets/` directory.
+
+You can move any sensitive environment variables out of your standard env profiles and define them here:
+* **`DUMBASSETS_PIN`**: The secure admin login/upload security PIN (defaults to `0604` if not defined).
+* **`DUMBASSETS_APPRISE_URL`**: Apprise notification endpoint URL for instant asset events (optional).
+
 [top](#top)
 
 #### How to Run <a name="how-to-run"></a>
