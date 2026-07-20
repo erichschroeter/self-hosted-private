@@ -14,7 +14,7 @@ Mealie is a self-hosted recipe manager and meal planner with a beautiful, user-f
 Mealie is configured in `services/mealie/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `9091` (Standard static fallback port mapping internally to port `9000`)
+* **Host Port**: `8504` (Standard static fallback port mapping internally to port `9000`)
 
 ##### Traefik Labels
 Exposes Mealie on standard port 80 at `http://mealie.localhost` (or `http://mealie.prplalpca.com`) on the external `traefik-net` network.
@@ -30,6 +30,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open Mealie at [http://mealie.localhost](http://mealie.localhost) or fallback on [http://localhost:9091](http://localhost:9091).
+Open Mealie at [http://mealie.localhost](http://mealie.localhost) or fallback on [http://localhost:8504](http://localhost:8504).
 
 [top](#top)

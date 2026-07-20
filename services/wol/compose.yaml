@@ -12,7 +12,7 @@ services:
       - ./data:/app/pb_data
     environment:
       - TZ=${TZ:-America/Chicago}
-      - UPSNAP_HTTP_LISTEN=0.0.0.0:${UPSNAP_PORT:-8090}
+      - UPSNAP_HTTP_LISTEN=0.0.0.0:${UPSNAP_PORT:-8505}
       - UPSNAP_SCAN_RANGE=${UPSNAP_SCAN_RANGE:-192.168.1.0/24}
     dns:
       - ${LOCAL_DNS_IP:-1.1.1.1}
@@ -20,7 +20,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.wol.rule=${TRAEFIK_RULE:-Host(`wol.localhost`)}"
       - "traefik.http.routers.wol.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.wol.loadbalancer.server.url=http://${LOCAL_IP:-127.0.0.1}:${UPSNAP_PORT:-8090}"
+      - "traefik.http.services.wol.loadbalancer.server.url=http://${LOCAL_IP:-127.0.0.1}:${UPSNAP_PORT:-8505}"
 
 networks:
   traefik-net:

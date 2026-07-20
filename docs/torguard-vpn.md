@@ -20,11 +20,11 @@ This stack contains a centralized Gluetun WireGuard VPN client and a suite of se
 The stack is configured in `services/torguard-vpn/compose.yaml`.
 
 ##### Port Mappings (Fallback Ports)
-* **qBittorrent (Gluetun)**: `8088` (Internal `8080`)
-* **Bazarr**: `6767`
-* **Prowlarr**: `9696`
-* **Radarr**: `7878`
-* **Sonarr**: `8989`
+* **qBittorrent (Gluetun)**: `8506` (Internal `8080`)
+* **Bazarr**: `8507`
+* **Prowlarr**: `8508`
+* **Radarr**: `8509`
+* **Sonarr**: `8510`
 
 ##### Traefik Labels
 Each service is dynamically reverse-proxied over `traefik-net` on standard port 80:

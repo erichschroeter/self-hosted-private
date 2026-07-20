@@ -14,7 +14,7 @@ Dumbassets is a simple and lightweight self-hosted asset manager and file hostin
 Dumbassets is configured in `services/dumbassets/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `3030` (Standard static fallback port mapping internally to port `3000`)
+* **Host Port**: `8500` (Standard static fallback port mapping internally to port `3000`)
 
 ##### Traefik Labels
 Exposes the dashboard on standard port 80 at `http://dumbassets.localhost` (or `http://dumbassets.prplalpca.com`) on the external `traefik-net` network.
@@ -37,6 +37,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open your assets manager at [http://dumbassets.localhost](http://dumbassets.localhost) or fallback on [http://localhost:3030](http://localhost:3030).
+Open your assets manager at [http://dumbassets.localhost](http://dumbassets.localhost) or fallback on [http://localhost:8500](http://localhost:8500).
 
 [top](#top)

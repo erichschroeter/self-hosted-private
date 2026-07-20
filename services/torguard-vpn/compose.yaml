@@ -10,7 +10,7 @@ services:
     cap_add:
       - NET_ADMIN
     ports:
-      - "${BIND_IP:-127.0.0.1}:8088:8080" # Fallback port for qBittorrent webUI
+      - "${BIND_IP:-127.0.0.1}:8506:8080" # Fallback port for qBittorrent webUI
     networks:
       - vpn
       - traefik-net
@@ -73,7 +73,7 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     ports:
-      - "${BIND_IP:-127.0.0.1}:6767:6767" # Fallback port
+      - "${BIND_IP:-127.0.0.1}:8507:6767" # Fallback port
     networks:
       - traefik-net
     environment:
@@ -89,7 +89,7 @@ services:
       - "traefik.docker.network=traefik-net"
       - "traefik.http.routers.bazarr.rule=${BAZARR_TRAEFIK_RULE:-Host(`bazarr.localhost`)}"
       - "traefik.http.routers.bazarr.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=8507"
 
 
   #########################################################
@@ -114,7 +114,7 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     ports:
-      - "${BIND_IP:-127.0.0.1}:9696:9696" # Fallback port
+      - "${BIND_IP:-127.0.0.1}:8508:9696" # Fallback port
     networks:
       - traefik-net
     environment:
@@ -129,7 +129,7 @@ services:
       - "traefik.docker.network=traefik-net"
       - "traefik.http.routers.prowlarr.rule=${PROWLARR_TRAEFIK_RULE:-Host(`prowlarr.localhost`)}"
       - "traefik.http.routers.prowlarr.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=8508"
 
 
   #########################################################
@@ -140,7 +140,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     ports:
-      - "${BIND_IP:-127.0.0.1}:7878:7878" # Fallback port
+      - "${BIND_IP:-127.0.0.1}:8509:7878" # Fallback port
     networks:
       - traefik-net
     environment:
@@ -157,7 +157,7 @@ services:
       - "traefik.docker.network=traefik-net"
       - "traefik.http.routers.radarr.rule=${RADARR_TRAEFIK_RULE:-Host(`radarr.localhost`)}"
       - "traefik.http.routers.radarr.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+      - "traefik.http.services.radarr.loadbalancer.server.port=8509"
 
 
   #########################################################
@@ -168,7 +168,7 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     ports:
-      - "${BIND_IP:-127.0.0.1}:8989:8989" # Fallback port
+      - "${BIND_IP:-127.0.0.1}:8510:8989" # Fallback port
     networks:
       - traefik-net
     environment:
@@ -184,7 +184,7 @@ services:
       - "traefik.docker.network=traefik-net"
       - "traefik.http.routers.sonarr.rule=${SONARR_TRAEFIK_RULE:-Host(`sonarr.localhost`)}"
       - "traefik.http.routers.sonarr.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8510"
 
 
 #########################################################

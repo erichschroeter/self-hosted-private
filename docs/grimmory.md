@@ -14,7 +14,7 @@ Grimmory is a comprehensive, self-hosted book collection and media library manag
 Grimmory is configured in `services/grimmory/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `6060` (Standard static fallback port mapping internally to port `6060`)
+* **Host Port**: `8501` (Standard static fallback port mapping internally to port `6060`)
 
 ##### Traefik Labels
 Exposes the application on standard port 80 at `http://grimmory.localhost` (or `http://grimmory.prplalpca.com`) on the external `traefik-net` network.
@@ -41,6 +41,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open your books library at [http://grimmory.localhost](http://grimmory.localhost) or fallback on [http://localhost:6060](http://localhost:6060).
+Open your books library at [http://grimmory.localhost](http://grimmory.localhost) or fallback on [http://localhost:8501](http://localhost:8501).
 
 [top](#top)

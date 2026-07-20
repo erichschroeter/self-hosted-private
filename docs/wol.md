@@ -14,7 +14,7 @@ UpSnap is a simple self-hosted Wake-on-LAN dashboard that lets you wake and ping
 UpSnap is configured in `services/wol/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `8090` (Runs in host networking mode, exposing native server port `8090` directly)
+* **Host Port**: `8505` (Runs in host networking mode, exposing native server port `8505` directly)
 
 ##### Traefik Labels
 Exposes the Wake-on-LAN dashboard on standard port 80 at `http://wol.localhost` (or `http://wol.prplalpca.com`) on the external `traefik-net` network using a custom loadbalancer destination.
@@ -30,6 +30,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open UpSnap at [http://wol.localhost](http://wol.localhost) or fallback on [http://localhost:8090](http://localhost:8090).
+Open UpSnap at [http://wol.localhost](http://wol.localhost) or fallback on [http://localhost:8505](http://localhost:8505).
 
 [top](#top)

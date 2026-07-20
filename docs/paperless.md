@@ -14,7 +14,7 @@ Paperless-ngx is a document management system that transforms your physical docu
 Paperless is configured in `services/paperless/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `8010` (Standard static fallback port mapping internally to port `8000`)
+* **Host Port**: `8502` (Standard static fallback port mapping internally to port `8000`)
 
 ##### Traefik Labels
 Exposes Paperless on standard port 80 at `http://paperless.localhost` (or `http://paperless.prplalpca.com`) on the external `traefik-net` network.
@@ -40,6 +40,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open Paperless at [http://paperless.localhost](http://paperless.localhost) or fallback on [http://localhost:8010](http://localhost:8010).
+Open Paperless at [http://paperless.localhost](http://paperless.localhost) or fallback on [http://localhost:8502](http://localhost:8502).
 
 [top](#top)

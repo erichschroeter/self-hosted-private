@@ -15,13 +15,13 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       # Default HTTP Port
-      - "${PIHOLE_WEB_PORT:-8087}:80/tcp"
+      - "${PIHOLE_WEB_PORT:-8503}:80/tcp"
       # Default HTTPs Port. FTL will generate a self-signed certificate
       - "8443:443/tcp"
     environment:
       TZ: ${TZ:-America/Chicago}
       FTLCONF_webserver_api_password: ${FTLCONF_WEBSERVER_API_PASSWORD}
-      FTLCONF_webserver_port: '${PIHOLE_WEB_PORT:-8087}o,[::]:${PIHOLE_WEB_PORT:-8087}o,8443os,[::]:8443os'
+      FTLCONF_webserver_port: '${PIHOLE_WEB_PORT:-8503}o,[::]:${PIHOLE_WEB_PORT:-8503}o,8443os,[::]:8443os'
       FTLCONF_dns_listeningMode: 'ALL'
       FTLCONF_misc_dnsmasq_lines: 'address=/prplalpca.com/${LOCAL_IP:-10.4.0.11}'
       FTLCONF_webserver_domain: ${PIHOLE_WEBSERVER_DOMAIN:-pihole.localhost}
@@ -35,7 +35,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.rule=${TRAEFIK_RULE:-Host(`pihole.localhost`)}"
       - "traefik.http.routers.pihole.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
-      - "traefik.http.services.pihole.loadbalancer.server.url=http://${LOCAL_IP:-127.0.0.1}:${PIHOLE_WEB_PORT:-8087}"
+      - "traefik.http.services.pihole.loadbalancer.server.url=http://${LOCAL_IP:-127.0.0.1}:${PIHOLE_WEB_PORT:-8503}"
 
 networks:
   traefik-net:

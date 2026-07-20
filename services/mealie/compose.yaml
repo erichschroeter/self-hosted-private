@@ -4,7 +4,7 @@ services:
     image: ghcr.io/mealie-recipes/mealie:latest
     restart: unless-stopped
     ports:
-      - "${BIND_IP:-127.0.0.1}:9091:9000"
+      - "${BIND_IP:-127.0.0.1}:8504:9000"
     volumes:
       - mealie-data:/app/data/
     networks:

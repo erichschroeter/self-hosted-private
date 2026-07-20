@@ -14,7 +14,7 @@ Pi-hole is a self-hosted DNS sinkhole that blocks advertisements and tracking do
 Pi-hole is configured in `services/pihole/compose.yaml`.
 
 ##### Port Mappings
-* **Host Port**: `8087` (Exposing native HTTP port `8087` and DNS port `53` directly)
+* **Host Port**: `8503` (Exposing native HTTP port `8503` and DNS port `53` directly)
 
 ##### Traefik Labels
 Exposes the Pi-hole Admin Web Interface on standard port 80 at `http://pihole.localhost` (or `http://pihole.prplalpca.com`) on the external `traefik-net` network using a custom loadbalancer destination.
@@ -45,6 +45,6 @@ cp env/home.env .env  # Or env/work.env
 docker compose up -d
 ```
 
-Open Pi-hole at [http://pihole.localhost](http://pihole.localhost) or fallback on [http://localhost:8080](http://localhost:8080).
+Open Pi-hole at [http://pihole.localhost](http://pihole.localhost) or fallback on [http://localhost:8503](http://localhost:8503).
 
 [top](#top)
