@@ -1,0 +1,35 @@
+services:
+  service-name:
+    image: image-name:latest
+    container_name: service-name
+    restart: unless-stopped
+    ports:
+      # Exposes the fallback port.
+      # BIND_IP=127.0.0.1 secures the port to loopback only (e.g. for work laptop).
+      # BIND_IP=0.0.0.0 opens it to your entire network (e.g. for home server).
+      - "${BIND_IP:-127.0.0.1}:FALLBACK_PORT:CONTAINER_PORT"
+    networks:
+      - traefik-net
+    env_file:
+      - path: .env
+        required: true
+      # SECRETS ISOLATION (Conditional - ADR-0006):
+      # If this service manages database credentials, passwords, or sensitive API keys,
+      # uncomment the block below and ensure those secrets are kept in a local,
+      # uncommitted secrets.env file.
+      # - path: secrets.env
+      #   required: false
+
+    # Standard environmental variables (if any) go here
+    # environment:
+    #   - SOME_VAR=${SOME_VAR:-default_value}
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.service-name.rule=${TRAEFIK_RULE:-Host(`service-name.localhost`)}"
+      - "traefik.http.routers.service-name.entrypoints=${TRAEFIK_ENTRYPOINT:-web}"
+      - "traefik.http.services.service-name.loadbalancer.server.port=CONTAINER_PORT"
+
+networks:
+  traefik-net:
+    external: true
