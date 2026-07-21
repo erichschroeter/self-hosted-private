@@ -20,7 +20,6 @@ services:
       - "8443:443/tcp"
     environment:
       TZ: ${TZ:-America/Chicago}
-      FTLCONF_webserver_api_password: ${FTLCONF_WEBSERVER_API_PASSWORD}
       FTLCONF_webserver_port: '${PIHOLE_WEB_PORT:-8503}o,[::]:${PIHOLE_WEB_PORT:-8503}o,8443os,[::]:8443os'
       FTLCONF_dns_listeningMode: 'ALL'
       FTLCONF_misc_dnsmasq_lines: 'address=/prplalpca.com/${LOCAL_IP:-10.4.0.11}'

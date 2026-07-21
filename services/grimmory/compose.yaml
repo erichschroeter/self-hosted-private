@@ -13,7 +13,6 @@ services:
       - TZ=${TZ}
       - DATABASE_URL=${DATABASE_URL}
       - DATABASE_USERNAME=${DB_USER}
-      - DATABASE_PASSWORD=${DB_PASSWORD}
       - API_DOCS_ENABLED=${API_DOCS_ENABLED}
       - DISK_TYPE=${DISK_TYPE}
     networks:
@@ -54,10 +53,8 @@ services:
       - PUID=${DB_USER_ID}
       - PGID=${DB_GROUP_ID}
       - TZ=${TZ}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
     networks:
       - default
     volumes:
