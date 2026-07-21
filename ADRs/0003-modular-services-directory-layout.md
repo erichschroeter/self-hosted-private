@@ -14,18 +14,17 @@ We will employ a **modular directory layout** structured around isolated helper 
 1. **Isolated Service Directories**: Every helper application gets its own dedicated folder under the root `services/` folder (e.g., `services/traefik/`, `services/homepage/`, `services/it-tools/`).
 2. **Autonomous Stacks**: Each service directory must contain its own self-sufficient `compose.yaml` file, local configuration folders, and state or volume mount targets.
 3. **External Common Networks**: Cross-container routing is accomplished strictly using defined external Docker network hooks (e.g., `traefik-net`), rather than bundling services into the same network group or file.
-4. **Isolated Documentation**: For clear discoverability, standard service documentation is organized in a top-level `docs/` folder, with exactly one markdown file mapping to each corresponding folder in `services/`.
+4. **Isolated Documentation**: For clear discoverability, standard service documentation is organized directly inside each respective service folder as a local `README.md` file.
 
 ```text
 .
-├── docs/                   # Independent service guides
-│   ├── traefik.md
-│   └── homepage.md
 └── services/               # Standalone service stacks
     ├── traefik/
-    │   └── compose.yaml
+    │   ├── compose.yaml
+    │   └── README.md       # Local service documentation
     └── homepage/
-        └── compose.yaml
+        ├── compose.yaml
+        └── README.md       # Local service documentation
 ```
 
 ## Consequences

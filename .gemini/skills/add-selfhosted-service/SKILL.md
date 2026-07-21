@@ -1,6 +1,6 @@
 ---
 name: add-selfhosted-service
-description: Guides and automates the creation of a new containerized helper stack inside the self-hosted services repository, enforcing multi-context configs, fallback port assignments starting at 8100, standard documentation, and optional backup/restore utilities. Use this skill when requested to add, register, bootstrap, or create a new self-hosted service stack.
+description: Guides and automates the creation of a new containerized helper stack inside the self-hosted services repository, enforcing multi-context configs, fallback port assignments starting at 8100, standard README documentation, and optional backup/restore utilities. Use this skill when requested to add, register, bootstrap, or create a new self-hosted service stack.
 ---
 
 # Add Self-Hosted Service Skill Guide
@@ -45,17 +45,17 @@ If the service holds persistent database records or files, scaffold backup and r
 - Copy `references/backup_template.sh` to `services/<service-name>/backup.sh`.
 - Copy `references/restore_template.sh` to `services/<service-name>/restore.sh`.
 - Modify both scripts with service-specific dump/extraction commands (e.g., `pg_dump`, `sqlite3` backups, or raw folder copies).
-- If the service is stateless, document it as stateless in the docs and skip creating backup/restore scripts.
+- If the service is stateless, document it as stateless in its local README.md and skip creating backup/restore scripts.
 
-### Step 6: Create Service Documentation
-Create a standard markdown document at `docs/<service-name>.md` using `references/doc_template.md`.
+### Step 6: Create Service README Documentation
+Create a standard markdown document at `services/<service-name>/README.md` using `references/readme_template.md`.
 - Fill out all placeholders (`SERVICE_NAME_CAPITALIZED`, `SERVICE_DESCRIPTION`, `FALLBACK_PORT`, etc.).
 - Under the **Backing Up** and **Restoring** sections, document the exact backup and restore scripts or guidelines you set up in Step 5. If stateless, simply note: "*This service is stateless and does not require local data backups or restoration procedures.*"
 
 ### Step 7: Update Main Repository Metadata
 To maintain discoverability:
 1. **Homepage Bookmarks**: Add fallback links for the new service to both `services/homepage/config/bookmarks.home.yaml` and `services/homepage/config/bookmarks.work.yaml`.
-2. **README.md**: Add a new row to the main README.md services index table.
+2. **README.md**: Add a new row to the main README.md services index table, linking the Read Docs option to `services/<service-name>/README.md`.
 
 ### Step 8: Validate Context Switching
 Validate that context switching works cleanly by running:

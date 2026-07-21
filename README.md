@@ -10,15 +10,15 @@ This repository contains private local service stacks managed via Docker Compose
 
 | Service | Traefik Domain URL (Home / Local) | Fallback URL (Static Port) | Documentation |
 | :--- | :--- | :--- | :--- |
-| **Dumbassets** | `http://dumbassets.prplalpca.com` or `.localhost` | [http://localhost:8500](http://localhost:8500) | [Read Docs](docs/dumbassets.md) |
-| **Grimmory** | `http://grimmory.prplalpca.com` or `.localhost` | [http://localhost:8501](http://localhost:8501) | [Read Docs](docs/grimmory.md) |
-| **Jellyfin** | `https://jellyfin.prplalpca.com` or `.localhost` | [http://localhost:8096](http://localhost:8096) | [Read Docs](docs/jellyfin.md) |
-| **Mealie Recipes** | `http://mealie.prplalpca.com` or `.localhost` | [http://localhost:8504](http://localhost:8504) | [Read Docs](docs/mealie.md) |
-| **Paperless Documents** | `http://paperless.prplalpca.com` or `.localhost` | [http://localhost:8502](http://localhost:8502) | [Read Docs](docs/paperless.md) |
-| **Pi-hole Admin** | `http://pihole.prplalpca.com` or `.localhost` | [http://localhost:8503](http://localhost:8503) | [Read Docs](docs/pihole.md) |
-| **Plex Media Server** | `http://plex.prplalpca.com` or `.localhost` | [http://localhost:32400](http://localhost:32400) | [Read Docs](docs/plex.md) |
-| **TorGuard VPN Stack** | Multiple domains (see docs) | Multiple ports (see docs) | [Read Docs](docs/torguard-vpn.md) |
-| **Wake-on-LAN (UpSnap)** | `http://wol.prplalpca.com` or `.localhost` | [http://localhost:8505](http://localhost:8505) | [Read Docs](docs/wol.md) |
+| **Dumbassets** | `http://dumbassets.prplalpca.com` or `.localhost` | [http://localhost:8500](http://localhost:8500) | [Read Docs](services/dumbassets/README.md) |
+| **Grimmory** | `http://grimmory.prplalpca.com` or `.localhost` | [http://localhost:8501](http://localhost:8501) | [Read Docs](services/grimmory/README.md) |
+| **Jellyfin** | `https://jellyfin.prplalpca.com` or `.localhost` | [http://localhost:8096](http://localhost:8096) | [Read Docs](services/jellyfin/README.md) |
+| **Mealie Recipes** | `http://mealie.prplalpca.com` or `.localhost` | [http://localhost:8504](http://localhost:8504) | [Read Docs](services/mealie/README.md) |
+| **Paperless Documents** | `http://paperless.prplalpca.com` or `.localhost` | [http://localhost:8502](http://localhost:8502) | [Read Docs](services/paperless/README.md) |
+| **Pi-hole Admin** | `http://pihole.prplalpca.com` or `.localhost` | [http://localhost:8503](http://localhost:8503) | [Read Docs](services/pihole/README.md) |
+| **Plex Media Server** | `http://plex.prplalpca.com` or `.localhost` | [http://localhost:32400](http://localhost:32400) | [Read Docs](services/plex/README.md) |
+| **TorGuard VPN Stack** | Multiple domains (see docs) | Multiple ports (see docs) | [Read Docs](services/torguard-vpn/README.md) |
+| **Wake-on-LAN (UpSnap)** | `http://wol.prplalpca.com` or `.localhost` | [http://localhost:8505](http://localhost:8505) | [Read Docs](services/wol/README.md) |
 
 ---
 
